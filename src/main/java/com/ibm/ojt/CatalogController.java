@@ -36,6 +36,45 @@ public class CatalogController{
 		Catalog product = mongoTemplate.findOne(query, Catalog.class, "catalogdata");
 		return product;
 	}
+	
+	//stopped here --> search how to update the entire document
+	@PutMapping("/item/{prodcode}")
+	public void updateProduct(@PathVariable String prodcode, @RequestBody Catalog catalog) {
+		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
+		Update update = new Update().set("catalog", catalog);
+		mongoTemplate.updateFirst(query, update, "cart");
+	}
+	
+	@PostMapping(value = "/item", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void createProduct(@RequestBody Catalog catalog) {
+		Query query = new Query().addCriteria(Criteria.where("prodcode").is(catalog.getProdcode()));
+		Catalog _catalog = mongoTemplate.findOne(query, Catalog.class, "catalogdata");
+		if (_catalog == null) {
+			_catalog = new Catalog();
+			_catalog.setGender(catalog.getGender());
+			_catalog.setImgname(catalog.getImgname());
+			_catalog.setIsavailable(catalog.isIsavailable());
+			_catalog.setProdbrand(catalog.getProdbrand());
+			_catalog.setProdcode(catalog.getProdcode());
+			_catalog.setProdcolor(catalog.getProdcolor());
+			_catalog.setProddesc(catalog.getProddesc());
+			_catalog.setProdname(catalog.getProdname());
+			_catalog.setProdprice(catalog.getProdprice());
+			_catalog.setProdsizes(catalog.getProdsizes());
+			_catalog.setProdtype(catalog.getProdtype());
+			_catalog.setRateavg(catalog.getRateavg());
+			_catalog.setRatercount(catalog.getRatercount());
+			_catalog.setReviews(catalog.getReviews());
+			_catalog.setSalerate(catalog.getSalerate());
+			_catalog.setViewcount(catalog.getViewcount());
+			_catalog.setTags(catalog.getTags());
+		}
+	}
+	
+	@DeleteMapping("/item/{prodcode}")
+	public void deleteProduct(@PathVariable String prodcode, @RequestBody Catalog catalog) {
+		
+	}
 //	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 //	public void createCart(@RequestBody Cart cart) {
 //		Query query = new Query().addCriteria(Criteria.where("customerId").is(cart.getCustomerId()));

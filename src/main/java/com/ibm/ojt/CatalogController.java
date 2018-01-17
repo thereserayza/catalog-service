@@ -37,7 +37,6 @@ public class CatalogController{
 		return product;
 	}
 	
-	//stopped here --> search how to update the entire document
 	@PutMapping("/item/{prodcode}")
 	public void updateProduct(@PathVariable String prodcode, @RequestBody Catalog catalog) {
 		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
@@ -82,7 +81,7 @@ public class CatalogController{
 			_catalog.setRateavg(catalog.getRateavg());
 			_catalog.setRatercount(catalog.getRatercount());
 			_catalog.setReviews(catalog.getReviews());
-			_catalog.setDiscountrate(catalog.getDiscountrate());
+			_catalog.setDiscountrate(0.0);
 			_catalog.setViewcount(catalog.getViewcount());
 			_catalog.setTags(catalog.getTags());
 			mongoTemplate.save(_catalog, "catalogdata");

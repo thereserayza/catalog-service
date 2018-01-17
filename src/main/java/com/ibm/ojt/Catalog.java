@@ -25,7 +25,7 @@ public class Catalog {
 	private List<Double> prodsizes = new ArrayList<Double>();
 	private int ratercount;
 	private double rateavg;
-	private double discountrate;
+	private double discountrate = 0.0;
 	private List<Review> reviews = new ArrayList<Review>();
 	private int viewcount;
 	

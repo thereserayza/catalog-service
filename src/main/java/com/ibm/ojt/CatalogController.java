@@ -41,8 +41,25 @@ public class CatalogController{
 	@PutMapping("/item/{prodcode}")
 	public void updateProduct(@PathVariable String prodcode, @RequestBody Catalog catalog) {
 		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
-		Update update = new Update().set("catalog", catalog);
-		mongoTemplate.updateFirst(query, update, "cart");
+		Update update = new Update();
+		update.set("prodcode", catalog.getProdcode());
+		update.set("prodname", catalog.getProdname());
+		update.set("proddesc", catalog.getProddesc());
+		update.set("prodtype", catalog.getProdtype());
+		update.set("prodprice", catalog.getProdprice());
+		update.set("isavailable", catalog.isIsavailable());
+		update.set("imgname", catalog.getImgname());
+		update.set("tags", catalog.getTags());
+		update.set("prodcolor", catalog.getProdcode());
+		update.set("prodbrand", catalog.getProdbrand());
+		update.set("gender", catalog.getGender());
+		update.set("prodsizes", catalog.getProdsizes());
+//		update.set("ratercount", catalog.getRatercount());
+//		update.set("rateavg", catalog.getRateavg());
+		update.set("salerate", catalog.getDiscountrate());
+//		update.set("reviews", catalog.getReviews());
+//		update.set("viewcount", catalog.getViewcount());
+		mongoTemplate.updateFirst(query, update, "catalogdata");
 	}
 	
 	@PostMapping(value = "/item", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -65,98 +82,46 @@ public class CatalogController{
 			_catalog.setRateavg(catalog.getRateavg());
 			_catalog.setRatercount(catalog.getRatercount());
 			_catalog.setReviews(catalog.getReviews());
-			_catalog.setSalerate(catalog.getSalerate());
+			_catalog.setDiscountrate(catalog.getDiscountrate());
 			_catalog.setViewcount(catalog.getViewcount());
 			_catalog.setTags(catalog.getTags());
+			mongoTemplate.save(_catalog, "catalogdata");
 		}
 	}
 	
 	@DeleteMapping("/item/{prodcode}")
 	public void deleteProduct(@PathVariable String prodcode, @RequestBody Catalog catalog) {
-		
+		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
+		Catalog _catalog = mongoTemplate.findOne(query, Catalog.class, "catalogdata");
+		if (_catalog != null) {
+			mongoTemplate.remove(query, "catalogdata");
+		}
 	}
-//	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-//	public void createCart(@RequestBody Cart cart) {
-//		Query query = new Query().addCriteria(Criteria.where("customerId").is(cart.getCustomerId()));
-//		Cart _cart = mongoTemplate.findOne(query, Cart.class, "cart");
-//		if (_cart == null) {
-//			_cart = new Cart();
-//			_cart.setCustomerId(cart.getCustomerId());
-//			_cart.setCartItems(cart.getCartItems());
-//			_cart.setStatus("OP");
-//			mongoTemplate.save(_cart, "cart");
-//		}
-//	}
-//	
-//	@GetMapping
-//	public List<Cart> findAllCarts() {
-//		return mongoTemplate.findAll(Cart.class, "cart");
-//	}
-//	
-//	@DeleteMapping("/{_id}")
-//	public void deleteCart(@PathVariable String _id) {
-//		Query query = new Query(Criteria.where("_id").is(_id));
-//		mongoTemplate.findAllAndRemove(query, "cart");
-//	}
-//
-//	@GetMapping("/search/caid/{cartId}")
-//	public Cart findByCartId(@PathVariable String _id) {
-//		Query query = new Query().addCriteria(Criteria.where("_id").is(_id));
-//		Cart _cart = mongoTemplate.findOne(query, Cart.class, "cart");
-//		return _cart;
-//	}
-//	
-//	@GetMapping("/search/cuid/{customerId}")
-//	public Cart findByCustomerId(@PathVariable String customerId) {
-//		Query query = new Query().addCriteria(Criteria.where("customerId").is(customerId));
-//		Cart _cart = mongoTemplate.findOne(query, Cart.class, "cart");
-//		return _cart;
-//	}
-//	
-//	//adds a new item to cart
-//	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, value = "/{_id}/add")
-//	public void addToCart(@RequestBody CartItem cartItem, @PathVariable String _id) {
-//		Criteria custCriteria = Criteria.where("_id").is(_id);
-//		Query query = new Query(new Criteria().andOperator(custCriteria, Criteria.where("cartItems.prodCode").nin(cartItem.getProdCode())));
-//		Update update = new Update().addToSet("cartItems", cartItem);
-//		mongoTemplate.updateFirst(query, update, "cart");
-//	}
-//	
-//	//Updates the quantity/size of item
-//	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, value = "/{_id}/update")
-//	public void updateCartItem(@RequestBody CartItem cartItem, @PathVariable String _id) {
-//		Criteria custCriteria = Criteria.where("_id").is(_id);
-//		Query query = new Query(new Criteria().andOperator(custCriteria, Criteria.where("cartItems.prodCode").in(cartItem.getProdCode())));
-//		Update update = new Update().set("cartItems.$.itemQty", cartItem.getItemQty());
-//		System.out.println(mongoTemplate.updateFirst(query, update, "cart"));
-//	}
-//	
-//	//deletes item from cart
-//	@DeleteMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, value="/{_id}/delete")
-//	public void deleteCartItem(@RequestBody CartItem cartItem, @PathVariable String _id) {
-//		Query query = new Query().addCriteria(Criteria.where("_id").is(_id).and("cartItems.prodCode").in(cartItem.getProdCode()));
-//		Cart _cart = mongoTemplate.findOne(query, Cart.class, "cart");
-//		if (_cart != null) { // if new item is not in the cart
-//			Update update = new Update().pull("cartItems", cartItem);
-//			mongoTemplate.updateFirst(query, update, "cart");
-//		}
-//	}
-//	
-//	//deletes all items from cart
-//	@PutMapping(value="/{_id}/delete/all")
-//	public void emptyCart(@PathVariable String _id) {
-//		Query query = new Query().addCriteria(Criteria.where("_id").is(_id));
-//		Cart _cart = mongoTemplate.findOne(query, Cart.class, "cart");
-//		_cart.getCartItems().clear();
-//		Update update = new Update().set("cartItems", _cart.getCartItems());
-//		mongoTemplate.updateFirst(query, update, "cart");
-//	}
-//	
-//	//updates status of cart to "CL" when customer checks out
-//	@PutMapping("/{_id}/checkout")
-//	public void closeCart(@PathVariable String _id) {
-//		Query query = new Query().addCriteria(Criteria.where("id").is(_id));
-//		Update update = new Update().set("status", "CL");
-//		mongoTemplate.updateFirst(query, update, "cart");
-//	}
+	
+	@PostMapping("/item/{prodcode}/review")
+	public void addReview(@RequestBody Review review, @PathVariable String prodcode) {
+		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
+		Update update = new Update().addToSet("reviews", review);
+		mongoTemplate.updateFirst(query, update, "catalogdata");
+	}
+	
+	@PutMapping("/item/{prodcode}/review")
+	public void updateReview(@RequestBody Review review, @PathVariable String prodcode) {
+		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
+		Update update = new Update().set("reviews.$.reviewstring", review.getReviewstring());
+		mongoTemplate.updateFirst(query, update, "catalogdata");
+	}
+	
+	@DeleteMapping("/item/{prodcode}/review")
+	public void deleteReview(@RequestBody Review review, @PathVariable String prodcode) {
+		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
+		Update update = new Update().pull("reviews", review);
+		mongoTemplate.updateFirst(query, update, "catalogdata");
+	}
+	
+	@GetMapping("/item/{prodcode}/reviews")
+	public List<Review> getReviews(@PathVariable String prodcode) {
+		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
+		return mongoTemplate.find(query, Review.class, "catalogdata");
+	}
 }

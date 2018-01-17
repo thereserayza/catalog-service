@@ -25,7 +25,7 @@ public class Catalog {
 	private List<Double> prodsizes = new ArrayList<Double>();
 	private int ratercount;
 	private double rateavg;
-	private double salerate;
+	private double discountrate;
 	private List<Review> reviews = new ArrayList<Review>();
 	private int viewcount;
 	
@@ -107,11 +107,11 @@ public class Catalog {
 	public void setRateavg(double rateavg) {
 		this.rateavg = rateavg;
 	}
-	public double getSalerate() {
-		return salerate;
+	public double getDiscountrate() {
+		return discountrate;
 	}
-	public void setSalerate(double salerate) {
-		this.salerate = salerate;
+	public void setDiscountrate(double discountrate) {
+		this.discountrate = discountrate;
 	}
 	public List<Review> getReviews() {
 		return reviews;

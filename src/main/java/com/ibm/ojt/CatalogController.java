@@ -25,7 +25,7 @@ public class CatalogController{
 	@Autowired
 	MongoTemplate mongoTemplate;
 	
-	@GetMapping("/all")
+	@GetMapping("/catalog/all")
 	public List<Catalog> findAllCatalog() {
 		return mongoTemplate.findAll(Catalog.class, "catalogdata");
 	}
@@ -46,13 +46,13 @@ public class CatalogController{
 		update.set("proddesc", catalog.getProddesc());
 		update.set("prodtype", catalog.getProdtype());
 		update.set("prodprice", catalog.getProdprice());
-		update.set("isavailable", catalog.isIsavailable());
+//		update.set("isavailable", catalog.isIsavailable());
 		update.set("imgname", catalog.getImgname());
 		update.set("tags", catalog.getTags());
 		update.set("prodcolor", catalog.getProdcode());
 		update.set("prodbrand", catalog.getProdbrand());
 		update.set("gender", catalog.getGender());
-		update.set("prodsizes", catalog.getProdsizes());
+//		update.set("prodsizes", catalog.getProdsizes());
 //		update.set("ratercount", catalog.getRatercount());
 //		update.set("rateavg", catalog.getRateavg());
 		update.set("salerate", catalog.getDiscountrate());
@@ -69,14 +69,14 @@ public class CatalogController{
 			_catalog = new Catalog();
 			_catalog.setGender(catalog.getGender());
 			_catalog.setImgname(catalog.getImgname());
-			_catalog.setIsavailable(catalog.isIsavailable());
+//			_catalog.setIsavailable(catalog.isIsavailable());
 			_catalog.setProdbrand(catalog.getProdbrand());
 			_catalog.setProdcode(catalog.getProdcode());
 			_catalog.setProdcolor(catalog.getProdcolor());
 			_catalog.setProddesc(catalog.getProddesc());
 			_catalog.setProdname(catalog.getProdname());
 			_catalog.setProdprice(catalog.getProdprice());
-			_catalog.setProdsizes(catalog.getProdsizes());
+//			_catalog.setProdsizes(catalog.getProdsizes());
 			_catalog.setProdtype(catalog.getProdtype());
 			_catalog.setRateavg(catalog.getRateavg());
 			_catalog.setRatercount(catalog.getRatercount());

@@ -16,13 +16,11 @@ public class Catalog {
 	private String proddesc;
 	private String prodtype;
 	private double prodprice;
-//	private boolean isavailable;
 	private String imgname;
 	private List<String> tags = new ArrayList<String>();
 	private String prodcolor;
 	private String prodbrand;
 	private String gender;
-//	private List<Double> prodsizes = new ArrayList<Double>();
 	private int ratercount;
 	private double rateavg;
 	private double discountrate = 0.0;
@@ -53,12 +51,6 @@ public class Catalog {
 	public void setProdprice(double prodprice) {
 		this.prodprice = prodprice;
 	}
-//	public boolean isIsavailable() {
-//		return isavailable;
-//	}
-//	public void setIsavailable(boolean isavailable) {
-//		this.isavailable = isavailable;
-//	}
 	public String getImgname() {
 		return imgname;
 	}
@@ -83,12 +75,6 @@ public class Catalog {
 	public void setProdbrand(String prodbrand) {
 		this.prodbrand = prodbrand;
 	}
-//	public List<Double> getProdsizes() {
-//		return prodsizes;
-//	}
-//	public void setProdsizes(List<Double> prodsizes) {
-//		this.prodsizes = prodsizes;
-//	}
 	public String getGender() {
 		return gender;
 	}

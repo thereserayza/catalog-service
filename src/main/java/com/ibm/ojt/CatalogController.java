@@ -103,10 +103,18 @@ public class CatalogController{
 		mongoTemplate.updateFirst(query, update, "catalogdata");
 	}
 	
-	@DeleteMapping("/item/{prodcode}/review")
-	public void deleteReview(@RequestBody Review review, @PathVariable String prodcode) {
+	@DeleteMapping("/item/{prodcode}/review/{reviewId}")
+	public void deleteReview(@PathVariable String prodcode, @PathVariable String reviewId) {
 		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
-		Update update = new Update().pull("reviews", review);
+		Catalog _catalog = mongoTemplate.findOne(query, Catalog.class, "catalogdata");
+		Review _review = null;
+		for (Review i : _catalog.getReviews()) {
+			if (i.get_id().equals(reviewId)) {
+				_review = i;
+				break;
+			}
+		}
+		Update update = new Update().pull("reviews", _review);
 		mongoTemplate.updateFirst(query, update, "catalogdata");
 	}
 	

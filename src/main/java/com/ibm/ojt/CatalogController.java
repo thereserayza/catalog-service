@@ -37,7 +37,7 @@ public class CatalogController{
 		return product;
 	}
 	
-	@PutMapping("/item/{prodcode}")
+	@PutMapping(consumes=MediaType.APPLICATION_JSON_VALUE, value="/item/{prodcode}")
 	public void updateProduct(@PathVariable String prodcode, @RequestBody Catalog catalog) {
 		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
 		Update update = new Update();
@@ -81,7 +81,7 @@ public class CatalogController{
 	}
 	
 	@DeleteMapping("/item/{prodcode}")
-	public void deleteProduct(@PathVariable String prodcode, @RequestBody Catalog catalog) {
+	public void deleteProduct(@PathVariable String prodcode) {
 		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
 		Catalog _catalog = mongoTemplate.findOne(query, Catalog.class, "catalogdata");
 		if (_catalog != null) {
@@ -89,14 +89,14 @@ public class CatalogController{
 		}
 	}
 	
-	@PostMapping("/item/{prodcode}/review")
+	@PostMapping(value="/item/{prodcode}/review", consumes=MediaType.APPLICATION_JSON_VALUE)
 	public void addReview(@RequestBody Review review, @PathVariable String prodcode) {
 		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
 		Update update = new Update().addToSet("reviews", review);
 		mongoTemplate.updateFirst(query, update, "catalogdata");
 	}
 	
-	@PutMapping("/item/{prodcode}/review")
+	@PutMapping(value="/item/{prodcode}/review", consumes=MediaType.APPLICATION_JSON_VALUE)
 	public void updateReview(@RequestBody Review review, @PathVariable String prodcode) {
 		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
 		Update update = new Update().set("reviews.$.reviewstring", review.getReviewstring());

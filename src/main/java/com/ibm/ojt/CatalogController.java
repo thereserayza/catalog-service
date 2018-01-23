@@ -1,5 +1,6 @@
 package com.ibm.ojt;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,5 +123,20 @@ public class CatalogController{
 	public List<Review> getReviews(@PathVariable String prodcode) {
 		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
 		return mongoTemplate.find(query, Review.class, "catalogdata");
+	}
+	
+	@GetMapping("/items/{prodcodes}")
+	public List<Catalog> getCatalogInfo(@PathVariable String prodcodes) {
+		String[] array = prodcodes.split("-");
+		List<Catalog> list = new ArrayList<Catalog>();
+		for (String prodcode : array) {
+			Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
+			query.fields().include("prodprice");
+			query.fields().include("prodname");
+			query.fields().include("imgname");
+			query.fields().include("discountrate");
+			list.add(mongoTemplate.findOne(query, Catalog.class, "catalogdata"));
+		}
+		return list;
 	}
 }

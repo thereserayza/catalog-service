@@ -99,7 +99,7 @@ public class CatalogController{
 	
 	@PutMapping(value="/item/{prodcode}/review", consumes=MediaType.APPLICATION_JSON_VALUE)
 	public void updateReview(@RequestBody Review review, @PathVariable String prodcode) {
-		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
+		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode).and("reviews._id").is(review.get_id()));
 		Update update = new Update().set("reviews.$.reviewstring", review.getReviewstring());
 		mongoTemplate.updateFirst(query, update, "catalogdata");
 	}
@@ -110,7 +110,7 @@ public class CatalogController{
 		Catalog _catalog = mongoTemplate.findOne(query, Catalog.class, "catalogdata");
 		Review _review = null;
 		for (Review i : _catalog.getReviews()) {
-			if (i.get_id().equals(reviewId)) {
+			if (i.get_id().toString().equals(reviewId)) {
 				_review = i;
 				break;
 			}

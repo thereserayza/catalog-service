@@ -1,18 +1,19 @@
 package com.ibm.ojt;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
 public class Review {
 	@Id
-	private String _id;
+	private ObjectId _id = new ObjectId();
 	private String userid;
 	private String username;
 	private String reviewstring;
 	
-	public String get_id() {
+	public ObjectId get_id() {
 		return _id;
 	}
-	public void set_id(String _id) {
+	public void set_id(ObjectId _id) {
 		this._id = _id;
 	}
 	public String getUserid() {

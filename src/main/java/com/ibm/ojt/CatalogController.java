@@ -99,9 +99,9 @@ public class CatalogController{
 	
 	@PutMapping(value="/item/{prodcode}/review", consumes=MediaType.APPLICATION_JSON_VALUE)
 	public void updateReview(@RequestBody Review review, @PathVariable String prodcode) {
-		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode).and("reviews._id").is(review.get_id()));
+		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode).and("reviews._id").in(review.get_id()));
 		Update update = new Update().set("reviews.$.reviewstring", review.getReviewstring());
-		mongoTemplate.updateFirst(query, update, "catalogdata");
+		System.out.println(mongoTemplate.updateFirst(query, update, "catalogdata"));
 	}
 	
 	@DeleteMapping("/item/{prodcode}/review/{reviewId}")

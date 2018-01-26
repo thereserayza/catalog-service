@@ -3,6 +3,7 @@ package com.ibm.ojt;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -99,9 +100,9 @@ public class CatalogController{
 	
 	@PutMapping(value="/item/{prodcode}/review", consumes=MediaType.APPLICATION_JSON_VALUE)
 	public void updateReview(@RequestBody Review review, @PathVariable String prodcode) {
-		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode).and("reviews._id").in(review.get_id()));
+		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode).and("reviews._id").in(new ObjectId(review.get_id())));
 		Update update = new Update().set("reviews.$.reviewstring", review.getReviewstring());
-		System.out.println(mongoTemplate.updateFirst(query, update, "catalogdata"));
+		mongoTemplate.updateFirst(query, update, "catalogdata");
 	}
 	
 	@DeleteMapping("/item/{prodcode}/review/{reviewId}")
@@ -131,6 +132,7 @@ public class CatalogController{
 		List<Catalog> list = new ArrayList<Catalog>();
 		for (String prodcode : array) {
 			Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
+			query.fields().include("prodcode");
 			query.fields().include("prodprice");
 			query.fields().include("prodname");
 			query.fields().include("imgname");

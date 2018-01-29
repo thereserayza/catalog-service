@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-//import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
@@ -62,21 +61,7 @@ public class CatalogController{
 		Query query = new Query().addCriteria(Criteria.where("prodcode").is(catalog.getProdcode()));
 		Catalog _catalog = mongoTemplate.findOne(query, Catalog.class, "catalogdata");
 		if (_catalog == null) {
-			_catalog = new Catalog();
-			_catalog.setGender(catalog.getGender());
-			_catalog.setImgname(catalog.getImgname());
-			_catalog.setProdbrand(catalog.getProdbrand());
-			_catalog.setProdcode(catalog.getProdcode());
-			_catalog.setProdcolor(catalog.getProdcolor());
-			_catalog.setProddesc(catalog.getProddesc());
-			_catalog.setProdname(catalog.getProdname());
-			_catalog.setProdprice(catalog.getProdprice());
-			_catalog.setProdtype(catalog.getProdtype());
-			_catalog.setReviews(catalog.getReviews());
-			_catalog.setDiscountrate(0.0);
-			_catalog.setViewcount(catalog.getViewcount());
-			_catalog.setTags(catalog.getTags());
-			mongoTemplate.save(_catalog, "catalogdata");
+			mongoTemplate.save(catalog, "catalogdata");
 		}
 	}
 	

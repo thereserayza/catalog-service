@@ -5,15 +5,15 @@ import org.springframework.data.annotation.Id;
 
 public class Review {
 	@Id
-	private ObjectId _id = new ObjectId();
+	private String _id = new ObjectId().toHexString();
 	private String userid;
 	private String username;
 	private String reviewstring;
 	
-	public ObjectId get_id() {
+	public String get_id() {
 		return _id;
 	}
-	public void set_id(ObjectId _id) {
+	public void set_id(String _id) {
 		this._id = _id;
 	}
 	public String getUserid() {

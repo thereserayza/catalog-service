@@ -21,8 +21,6 @@ public class Catalog {
 	private String prodcolor;
 	private String prodbrand;
 	private String gender;
-	private int ratercount;
-	private double rateavg;
 	private double discountrate = 0.0;
 	private List<Review> reviews = new ArrayList<Review>();
 	private int viewcount;
@@ -80,18 +78,6 @@ public class Catalog {
 	}
 	public void setGender(String gender) {
 		this.gender = gender;
-	}
-	public int getRatercount() {
-		return ratercount;
-	}
-	public void setRatercount(int ratercount) {
-		this.ratercount = ratercount;
-	}
-	public double getRateavg() {
-		return rateavg;
-	}
-	public void setRateavg(double rateavg) {
-		this.rateavg = rateavg;
 	}
 	public double getDiscountrate() {
 		return discountrate;

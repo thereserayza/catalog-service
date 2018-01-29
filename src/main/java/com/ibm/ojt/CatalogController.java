@@ -71,8 +71,6 @@ public class CatalogController{
 			_catalog.setProdname(catalog.getProdname());
 			_catalog.setProdprice(catalog.getProdprice());
 			_catalog.setProdtype(catalog.getProdtype());
-			_catalog.setRateavg(catalog.getRateavg());
-			_catalog.setRatercount(catalog.getRatercount());
 			_catalog.setReviews(catalog.getReviews());
 			_catalog.setDiscountrate(0.0);
 			_catalog.setViewcount(catalog.getViewcount());

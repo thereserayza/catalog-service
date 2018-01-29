@@ -124,4 +124,12 @@ public class CatalogController{
 		}
 		return list;
 	}
+	
+	@GetMapping("item/{prodcode}/discount")
+	public double getDiscountPrice(@PathVariable String prodcode) {
+		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
+		Catalog _catalog = mongoTemplate.findOne(query, Catalog.class, "catalogdata");
+		double discountedPrice = _catalog.getProdprice() * (1 - _catalog.getDiscountrate());
+		return discountedPrice;
+	}
 }

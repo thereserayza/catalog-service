@@ -133,7 +133,7 @@ public class CatalogController{
 		return discountedPrice;
 	}
 	
-	@PutMapping(value="/item/view/{prodcode}")
+	@GetMapping(value="/item/view/{prodcode}")
 	public void incrementViewCount(@PathVariable String prodcode) {
 		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
 		Update update = new Update().inc("viewcount", 1);

@@ -49,10 +49,10 @@ public class CatalogController{
 		update.set("prodprice", catalog.getProdprice());
 		update.set("imgname", catalog.getImgname());
 		update.set("tags", catalog.getTags());
-		update.set("prodcolor", catalog.getProdcode());
+		update.set("prodcolor", catalog.getProdcolor());
 		update.set("prodbrand", catalog.getProdbrand());
 		update.set("gender", catalog.getGender());
-		update.set("salerate", catalog.getDiscountrate());
+		update.set("discountrate", catalog.getDiscountrate());
 		mongoTemplate.updateFirst(query, update, "catalogdata");
 	}
 	
@@ -125,11 +125,18 @@ public class CatalogController{
 		return list;
 	}
 	
-	@GetMapping("item/{prodcode}/discount")
+	@GetMapping("/item/{prodcode}/discount")
 	public double getDiscountPrice(@PathVariable String prodcode) {
 		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
 		Catalog _catalog = mongoTemplate.findOne(query, Catalog.class, "catalogdata");
 		double discountedPrice = _catalog.getProdprice() * (1 - _catalog.getDiscountrate());
 		return discountedPrice;
+	}
+	
+	@PutMapping(value="/item/view/{prodcode}")
+	public void incrementViewCount(@PathVariable String prodcode) {
+		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
+		Update update = new Update().inc("viewcount", 1);
+		mongoTemplate.updateFirst(query, update, "catalogdata");
 	}
 }

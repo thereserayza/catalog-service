@@ -134,10 +134,10 @@ public class CatalogController{
 		return discountedPrice;
 	}
 	
-	@PatchMapping(value="/item/view/{prodcode}", consumes=MediaType.APPLICATION_JSON_VALUE)
+	@PatchMapping("/view/{prodcode}")
 	public void incrementViewCount(@PathVariable String prodcode) {
 		Query query = new Query().addCriteria(Criteria.where("prodcode").is(prodcode));
 		Update update = new Update().inc("viewcount", 1);
-		mongoTemplate.updateFirst(query, update, "catalogdata");
+		System.out.println(mongoTemplate.updateFirst(query, update, "catalogdata"));
 	}
 }
